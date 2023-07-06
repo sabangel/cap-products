@@ -160,3 +160,15 @@ define service Reports {
         where
             exists Supplier[Name = 'Exotic Liquids'];
 };
+
+define service MyService2 {
+    entity SuppliersProduct  as
+        select from asm.materials.Products[Name = 'Bread']{
+            *,
+            Name,
+            Description,
+            Supplier.Address
+        }
+        where
+            Supplier.Address.PostalCode = 98074;
+}
