@@ -10,7 +10,28 @@ Content-Type: application/json
 
 {
     "ClientEmail": "clientJG_01@prueba.com",
-    "FirstName": "Jhony",
+    "FirstName": "Fulano 0",
     "LastName": "Giraldo",
     "CreatedOn" : "2023-10-13"
 }
+
+### Update Order
+PUT http://localhost:4004/manage-orders/Orders('client1@client1.com') HTTP/1.1
+Content-Type: application/json
+
+{
+    "FirstName": "FirstName Updated",
+    "LastName": "LastName Updated"
+}
+
+### Delete Order
+DELETE http://localhost:4004/manage-orders/Orders('client5@client5.com')
+
+### Get Customer Rate - Function
+GET http://localhost:4004/manage-orders/getClientTaxRate(clientEmail='client2@client2.com')
+
+### Cancel Order - Action
+POST http://localhost:4004/manage-orders/cancelOrder
+Content-Type: application/json
+
+{ "clientEmail" : "client1@client1.com" }
