@@ -35,3 +35,7 @@ POST http://localhost:4004/manage-orders/cancelOrder
 Content-Type: application/json
 
 { "clientEmail" : "client1@client1.com" }
+
+### Get Customer Rate - Function
+GET http://localhost:4004/sap-backend-exit/Incidents
+
