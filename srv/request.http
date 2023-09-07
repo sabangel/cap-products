@@ -1,5 +1,8 @@
 ### Get Orders
-GET http://localhost:4004/manage-orders/Orders
+GET http://localhost:4004/v2/odata/v4/manage-orders/Orders
+
+### Get Orders odata V4
+GET http://localhost:4004/odata/v4/manage-orders/Orders
 
 ### Get Order Email
 GET http://localhost:4004/manage-orders/Orders('client4@client4.com')
@@ -38,4 +41,9 @@ Content-Type: application/json
 
 ### Get Customer Rate - Function
 GET http://localhost:4004/sap-backend-exit/Incidents
+
+### Graphql 
+GET http://localhost:4004/odata/v4/graphql
+
+
 
