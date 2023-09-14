@@ -40,7 +40,7 @@
       "graphql": {
         "path": "/graphql",
         "impl": "@cap-js/graphql"
-      }
+        }
     },
     "requires": {
       "sapbackend": {
