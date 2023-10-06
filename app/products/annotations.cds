@@ -9,6 +9,11 @@ annotate service.Products with @(
     UI.LineItem       : [
         {
             $Type: 'UI.DataField',
+            Label: 'ImageUrl',
+            Value: ImageUrl,
+        },
+        {
+            $Type: 'UI.DataField',
             Label: 'ProductName',
             Value: ProductName,
         },
@@ -18,9 +23,9 @@ annotate service.Products with @(
             Value: Description,
         },
         {
-            $Type: 'UI.DataField',
-            Label: 'ImageUrl',
-            Value: ImageUrl,
+            $Type : 'UI.DataFieldForAnnotation',
+            Label : 'Supplier',
+            Target: 'Supplier/@Communication.Contact'
         },
         {
             $Type: 'UI.DataField',
@@ -32,9 +37,23 @@ annotate service.Products with @(
             Label: 'DiscontinuedDate',
             Value: DiscontinuedDate,
         },
+        {
+            Label      : 'StockAvailability',
+            Value      : StockAvailability,
+            Criticality: StockAvailability,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Rating',
+            Value: Rating
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Price',
+            Value: Price
+        },
     ]
 );
-
 annotate service.Products with @(
     UI.FieldGroup #GeneratedGroup1: {
         $Type: 'UI.FieldGroupType',
@@ -101,18 +120,8 @@ annotate service.Products with @(
             },
             {
                 $Type: 'UI.DataField',
-                Label: 'CurrencyId',
-                Value: CurrencyId,
-            },
-            {
-                $Type: 'UI.DataField',
                 Label: 'ToCategory_ID',
                 Value: ToCategory_ID,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'CategoryId',
-                Value: CategoryId,
             },
             {
                 $Type: 'UI.DataField',
@@ -124,16 +133,6 @@ annotate service.Products with @(
                 Label: 'ToDimensionUnit_ID',
                 Value: ToDimensionUnit_ID,
             },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Rating',
-                Value: Rating,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'StockAvailability',
-                Value: StockAvailability,
-            },
         ],
     },
     UI.Facets                     : [{
@@ -143,12 +142,13 @@ annotate service.Products with @(
         Target: '@UI.FieldGroup#GeneratedGroup1',
     }, ]
 );
-
-/**
- * Ayudas de búsqueda - value search help
- */
+//Para configurar el campo de imagen
 annotate service.Products with {
-    //Category
+    ImageUrl @(UI.IsImageURL: true)
+};
+//Ayudas de busqueda
+annotate service.Products with {
+    // Ayuda para el campo Currency
     ToCategory        @(Common: {
         Text     : {
             $value                : Category,
@@ -171,8 +171,7 @@ annotate service.Products with {
             ]
         },
     });
-
-    //Currency
+    //Ayuda para el campo Currency
     ToCurrency        @(Common: {
         ValueListWithFixedValues: false,
         ValueList               : {
@@ -191,24 +190,26 @@ annotate service.Products with {
             ]
         },
     });
-
-    //Stock availability
+    // Ayuda de busqueda para Stock Availability
     StockAvailability @(Common: {
         ValueListWithFixedValues: true,
         ValueList               : {
             $Type         : 'Common.ValueListType',
             CollectionPath: 'StockAvailability',
-            Parameters    : [
-                {
-                    $Type            : 'Common.ValueListParameterInOut',
-                    LocalDataProperty: StockAvailability,
-                    ValueListProperty: 'ID'
-                }
+            Parameters    : [{
+                $Type            : 'Common.ValueListParameterInOut',
+                LocalDataProperty: StockAvailability,
+                ValueListProperty: 'ID'
+            },
+            /*             {
+                             $Type            : 'Common.ValueListParameterInOut',
+                             LocalDataProperty: StockAvailability,
+                             ValueListProperty: 'Description'
+                         }*/
             ]
         },
-    });
+    })
 };
-
 /**
  * Annotations for VH_Categories Entity
  */
@@ -222,37 +223,56 @@ annotate service.VH_Categories with {
     );
     Text @(UI: {HiddenFilter: true});
 };
-
 /**
- * Annotations for VH_Currency Entity
+ * Annotations for VH_Curency Entity
  */
-annotate service.VH_Currencies with {
+annotate service.VH_Currencies {
     Code @(UI: {HiddenFilter: true});
-    Text @(UI: {HiddenFilter: true})
-};
-
+    Text @(UI: {HiddenFilter: true});
+}
 /**
- * Annotations for StockAvailability Entity
+ * Annotations for StockAvailability
  */
-annotate service.StockAvailability with {
+annotate service.StockAvailability {
     ID @(Common: {Text: {
         $value                : Description,
         ![@UI.TextArrangement]: #TextOnly,
-    },})
-};
-
+    }})
+}
 /**
- * Annotations for VH_UnitOfMeasure Entity
+ * Annotations for annotate service.VH_UnitOfMeasure Entity
  */
-annotate service.VH_UnitOfMeasure with {
+annotate service.VH_UnitOfMeasure {
     Code @(UI: {HiddenFilter: true});
-    Text @(UI: {HiddenFilter: true})
-};
-
+    Text @(UI: {HiddenFilter: true});
+}
 /**
- * Annotations for VH_DimensionUnits Entity
+ * Annotations for annotate service.VH_UnitOfMeasure Entity
  */
-annotate service.VH_DimensionUnits with {
+annotate service.VH_DimensionUnits {
     Code @(UI: {HiddenFilter: true});
-    Text @(UI: {HiddenFilter: true})
-};
+    Text @(UI: {HiddenFilter: true});
+}
+/**
+ * Annotations for supplier entity
+ */
+annotate service.Supplier with @(Communication: {Contact: {
+    $Type: 'Communication.ContactType',
+    fn   : Name,
+    role : 'Supplier',
+    photo: 'sap-icon://supplier',
+    email: [{
+        type   : #work,
+        address: Email
+    }],
+    tel  : [
+        {
+            type: #work,
+            uri : Phone
+        },
+        {
+            type: #fax,
+            uri : Fax
+        }
+    ]
+}, });
