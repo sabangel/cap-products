@@ -1,6 +1,14 @@
 using CatalogService as service from '../../srv/catalog-service';
 
 annotate service.Products with @(
+    UI.HeaderInfo     : {
+        TypeName      : 'Product',
+        TypeNamePlural: 'Products',
+        ImageUrl      : ImageUrl,
+        Title         : {Value: ProductName},
+        Description   : {Value: Description}
+    },
+
     UI.SelectionFields: [
         ToCategory_ID,
         ToCurrency_ID,
@@ -43,9 +51,11 @@ annotate service.Products with @(
             Criticality: StockAvailability,
         },
         {
-            $Type: 'UI.DataField',
-            Label: 'Rating',
-            Value: Rating
+            // $Type: 'UI.DataField',
+            Label : 'Rating',
+            $Type : 'UI.DataFieldForAnnotation',
+            Target: '@UI.DataPoint#AverageRating'
+        // Value: Rating
         },
         {
             $Type: 'UI.DataField',
@@ -54,25 +64,26 @@ annotate service.Products with @(
         },
     ]
 );
+
 annotate service.Products with @(
     UI.FieldGroup #GeneratedGroup1: {
         $Type: 'UI.FieldGroupType',
         Data : [
-            {
-                $Type: 'UI.DataField',
-                Label: 'ProductName',
-                Value: ProductName,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Description',
-                Value: Description,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'ImageUrl',
-                Value: ImageUrl,
-            },
+            // {
+            //     $Type: 'UI.DataField',
+            //     Label: 'ProductName',
+            //     Value: ProductName,
+            // },
+            // {
+            //     $Type: 'UI.DataField',
+            //     Label: 'Description',
+            //     Value: Description,
+            // },
+            // {
+            //     $Type: 'UI.DataField',
+            //     Label: 'ImageUrl',
+            //     Value: ImageUrl,
+            // },
             {
                 $Type: 'UI.DataField',
                 Label: 'ReleaseDate',
@@ -87,6 +98,11 @@ annotate service.Products with @(
                 $Type: 'UI.DataField',
                 Label: 'Price',
                 Value: Price,
+            },
+            {
+                Label : 'Rating',
+                $Type : 'UI.DataFieldForAnnotation',
+                Target: '@UI.DataPoint#AverageRating'
             },
             {
                 $Type: 'UI.DataField',
@@ -142,10 +158,12 @@ annotate service.Products with @(
         Target: '@UI.FieldGroup#GeneratedGroup1',
     }, ]
 );
+
 //Para configurar el campo de imagen
 annotate service.Products with {
     ImageUrl @(UI.IsImageURL: true)
 };
+
 //Ayudas de busqueda
 annotate service.Products with {
     // Ayuda para el campo Currency
@@ -210,6 +228,7 @@ annotate service.Products with {
         },
     })
 };
+
 /**
  * Annotations for VH_Categories Entity
  */
@@ -223,6 +242,7 @@ annotate service.VH_Categories with {
     );
     Text @(UI: {HiddenFilter: true});
 };
+
 /**
  * Annotations for VH_Curency Entity
  */
@@ -230,6 +250,7 @@ annotate service.VH_Currencies {
     Code @(UI: {HiddenFilter: true});
     Text @(UI: {HiddenFilter: true});
 }
+
 /**
  * Annotations for StockAvailability
  */
@@ -239,6 +260,7 @@ annotate service.StockAvailability {
         ![@UI.TextArrangement]: #TextOnly,
     }})
 }
+
 /**
  * Annotations for annotate service.VH_UnitOfMeasure Entity
  */
@@ -246,6 +268,7 @@ annotate service.VH_UnitOfMeasure {
     Code @(UI: {HiddenFilter: true});
     Text @(UI: {HiddenFilter: true});
 }
+
 /**
  * Annotations for annotate service.VH_UnitOfMeasure Entity
  */
@@ -253,6 +276,7 @@ annotate service.VH_DimensionUnits {
     Code @(UI: {HiddenFilter: true});
     Text @(UI: {HiddenFilter: true});
 }
+
 /**
  * Annotations for supplier entity
  */
@@ -276,3 +300,13 @@ annotate service.Supplier with @(Communication: {Contact: {
         }
     ]
 }, });
+
+/**
+ * Data Point for Average Rating
+ */
+annotate service.Products with @(UI.DataPoint #AverageRating: {
+    Value        : Rating,
+    Title        : 'Rating',
+    TargetValue  : 5,
+    Visualization: #Rating
+});
